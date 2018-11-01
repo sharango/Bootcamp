@@ -2,4 +2,9 @@
 sqoop list-databases --connect jdbc:mysql://34.205.65.241:3306 --username bootcamp --password bootcamp
 2. Descargar archivo log
 wget http://34.205.65.241/access.log
-
+3. cargar a archivo carpeta hdfs
+hdfs dfs -mkdir /user/sarango/desafio
+4. cargar archivo hdfs
+hdfs dfs -put /home/ec2-user/desafio/* /user/sarango/desafio
+5. Revisar los archivos agregados al HDFS
+hdfs dfs -ls /user/sarango/desafio
