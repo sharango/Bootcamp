@@ -26,3 +26,11 @@ CREATE EXTERNAL TABLE log (
 )
 STORED AS TEXTFILE
 LOCATION '/user/sarango/desafio/';
+7. Importar tabla 
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://34.205.65.241:3306/ecommerce_cloudera --username bootcamp --password bootcamp --table product_transaction --split-by transaction_id --target-dir /user/sarango/desafio/prd1
+8. cambiar permiso a carpeta desafio
+hdfs dfs -chmod 777  /user/sarango/desafio/
+Validar permisos 
+hdfs dfs -ls /user/sarango/desafio
+hdfs dfs -ls /user/sarango/desafio/prd1
+
