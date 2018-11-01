@@ -1,1 +1,5 @@
+1. Validar base de datos
+sqoop list-databases --connect jdbc:mysql://34.205.65.241:3306 --username bootcamp --password bootcamp
+2. Descargar archivo log
+wget http://34.205.65.241/access.log
 
