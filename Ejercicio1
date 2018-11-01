@@ -8,3 +8,21 @@ hdfs dfs -mkdir /user/sarango/desafio
 hdfs dfs -put /home/ec2-user/desafio/* /user/sarango/desafio
 5. Revisar los archivos agregados al HDFS
 hdfs dfs -ls /user/sarango/desafio
+6. Crear tabla en HIVE
+CREATE EXTERNAL TABLE log (
+        `ip`                STRING,
+        `time_local`        STRING,
+        `method`            STRING,
+        `uri`               STRING,
+        `protocol`          STRING,
+        `status`            STRING,
+        `bytes_sent`        STRING,
+        `referer`           STRING,
+        `useragent`         STRING
+        )
+    ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
+    WITH SERDEPROPERTIES (
+    'input.regex'='^(\\S+) \\S+ \\S+ \\[([^\\[]+)\\] "(\\w+) (\\S+) (\\S+)" (\\d+) (\\d+) "([^"]+)" "([^"]+)".*'
+)
+STORED AS TEXTFILE
+LOCATION '/user/sarango/desafio/';
