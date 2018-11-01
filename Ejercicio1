@@ -26,6 +26,20 @@ CREATE EXTERNAL TABLE log (
 )
 STORED AS TEXTFILE
 LOCATION '/user/sarango/desafio/';
+
+CREATE EXTERNAL TABLE IF NOT EXISTS product_transaction (
+  transaction_id INT,
+  transaction_time TIMESTAMP,
+  customer_ssn  STRING,
+  customer_name STRING,
+  customer_email STRING,
+  customer_adress STRING,
+  customer_state STRING,
+  customer_zipcode STRING,
+  product_id INT,
+  product_cantity INT
+ ) ROW FORMAT delimited fields TERMINATED BY ','
+ STORED AS TEXTFILE LOCATION '/user/sarango/desafio/prd1';
 7. Importar tabla 
 sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://34.205.65.241:3306/ecommerce_cloudera --username bootcamp --password bootcamp --table product_transaction --split-by transaction_id --target-dir /user/sarango/desafio/prd1
 8. cambiar permiso a carpeta desafio
