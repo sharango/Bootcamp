@@ -20,11 +20,8 @@ CREATE EXTERNAL TABLE log (
         `referer`           STRING,
         `useragent`         STRING
         )
-    ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
-    WITH SERDEPROPERTIES (
-    'input.regex'='^(\\S+) \\S+ \\S+ \\[([^\\[]+)\\] "(\\w+) (\\S+) (\\S+)" (\\d+) (\\d+) "([^"]+)" "([^"]+)".*'
-)
-STORED AS TEXTFILE
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'
+WITH SERDEPROPERTIES ("input.regex" = '^(\\S+) \\S+ \\S+ \\[([^\\[]+)\\] "(\\w+) (\\S+) (\\S+)" (\\d+) (\\d+) "([^"]+)" "([^"]+)".*') 
 LOCATION '/user/sarango/desafio/';
 
 7. Consultar y validar datos 
@@ -57,7 +54,20 @@ hdfs dfs -chmod 777  /user/sarango/desafio/
 
 11.1 Validar permisos 
 hdfs dfs -ls /user/sarango/desafio
-hdfs dfs -ls /user/sarango/desafio/prd1
+hdfs dfs -ls /user/sarango/desafio/prd
+
+12. Crear tabla temporal para cargar la conversión de la venta
+CREATE TABLE conversion_5_1 AS 
+SELECT tbl1.skuID as sku, (tbl2.ventas / tbl1.visita) as conversion 
+FROM 
+    (select substring(uri,length(uri)-5) as skuID, count(0) as visita 
+    from log
+    group by substring(uri,length(uri)-5)) tbl1
+JOIN
+    (select product_id as skuID, sum(product_cantity) as ventas 
+    from product_transaction
+    group by product_id) tbl2
+ON tbl1.skuID = tbl2.skuID;
 
 
 
