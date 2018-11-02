@@ -8,7 +8,7 @@ hdfs dfs -mkdir /user/sarango/desafio
 hdfs dfs -put /home/ec2-user/desafio/* /user/sarango/desafio
 5. Revisar los archivos agregados al HDFS
 hdfs dfs -ls /user/sarango/desafio
-6. Crear tabla en HIVE
+6. Crear tabla LOG en HIVE, archivo .log que fue cargado a fichero HDFS
 CREATE EXTERNAL TABLE log (
         `ip`                STRING,
         `time_local`        STRING,
@@ -27,7 +27,15 @@ CREATE EXTERNAL TABLE log (
 STORED AS TEXTFILE
 LOCATION '/user/sarango/desafio/';
 
-CREATE EXTERNAL TABLE IF NOT EXISTS product_transaction (
+7. Consultar y validar datos 
+SELECT * FROM sarango.log LIMIT 100;
+
+8. Importar tabla 
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://34.205.65.241:3306/ecommerce_cloudera --username bootcamp --password bootcamp --table product_transaction --split-by transaction_id --target-dir /user/sarango/desafio/prd2
+
+9. Crear tabla en HIVE de product_transaction, tabla que fue cargada a fichero en HDFS
+
+CREATE EXTERNAL TABLE product_transaction (
   transaction_id INT,
   transaction_time TIMESTAMP,
   customer_ssn  STRING,
@@ -39,12 +47,17 @@ CREATE EXTERNAL TABLE IF NOT EXISTS product_transaction (
   product_id INT,
   product_cantity INT
  ) ROW FORMAT delimited fields TERMINATED BY ','
- STORED AS TEXTFILE LOCATION '/user/sarango/desafio/prd1';
-7. Importar tabla 
-sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://34.205.65.241:3306/ecommerce_cloudera --username bootcamp --password bootcamp --table product_transaction --split-by transaction_id --target-dir /user/sarango/desafio/prd2
-8. cambiar permiso a carpeta desafio
+ STORED AS TEXTFILE LOCATION '/user/sarango/desafio/prd';
+ 
+10. Consultar y validar datos 
+SELECT * FROM sarango.product_transaction LIMIT 100;
+
+11. cambiar permiso a carpeta desafio
 hdfs dfs -chmod 777  /user/sarango/desafio/
-Validar permisos 
+
+11.1 Validar permisos 
 hdfs dfs -ls /user/sarango/desafio
-hdfs dfs -ls /user/sarango/desafio/prd2
+hdfs dfs -ls /user/sarango/desafio/prd1
+
+
 
