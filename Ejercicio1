@@ -31,7 +31,7 @@ LOCATION '/user/sarango/desafio/';
 SELECT * FROM sarango.log LIMIT 100;
 
 8. Importar tabla 
-sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://34.205.65.241:3306/ecommerce_cloudera --username bootcamp --password bootcamp --table product_transaction --split-by transaction_id --target-dir /user/sarango/desafio/prd2
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://34.205.65.241:3306/ecommerce_cloudera --username bootcamp --password bootcamp --table product_transaction --split-by transaction_id --target-dir /user/sarango/desafio/prd
 
 9. Crear tabla en HIVE de product_transaction, tabla que fue cargada a fichero en HDFS
 
